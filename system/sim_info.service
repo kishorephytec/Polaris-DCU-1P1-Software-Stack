@@ -1,0 +1,14 @@
+[Unit]
+Description=Get SIM Information Service
+After=cellular.service
+Requires=cellular.service
+ 
+[Service]
+Type=simple
+User=root
+ExecStartPre=/bin/sleep 60
+ExecStart=/root/wirepas/get_sim_info
+Restart=always
+ 
+[Install]
+WantedBy=multi-user.target

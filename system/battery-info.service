@@ -1,0 +1,15 @@
+[Unit]
+Description= Battery Info
+After=DC-detection-gpio.service
+Requires=DC-detection-gpio.service
+ 
+[Service]
+Type=simple
+User=root
+ExecStartPre=/bin/sleep 30
+ExecStart=/root/wirepas/battery-info
+Restart=always
+RestartSec=3
+ 
+[Install]
+WantedBy=multi-user.target

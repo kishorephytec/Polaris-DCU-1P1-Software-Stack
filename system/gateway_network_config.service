@@ -1,0 +1,16 @@
+[Unit]
+Description=JSON Configuration Service
+After=network.target network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /var/www/html/network_master_conf.sh
+WorkingDirectory=/var/www/html
+Environment="SCRIPT=network_master_conf.sh"
+Environment="SCRIPT_ENV=development"
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

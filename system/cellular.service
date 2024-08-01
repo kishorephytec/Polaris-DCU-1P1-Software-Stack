@@ -1,0 +1,14 @@
+[Unit]
+Description=Cellular Connection
+Requires=network.target
+ 
+[Service]
+Type=simple
+User=root
+ 
+ExecStart=/bin/bash /var/www/html/cellular.sh
+Restart=on-failure
+RestartSec=5
+ 
+[Install]
+WantedBy=multi-user.target

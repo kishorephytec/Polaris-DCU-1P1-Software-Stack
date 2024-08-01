@@ -1,0 +1,12 @@
+[Unit]
+Description=Transport1 Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=wm-gw --settings=/root/wirepas/wirepas-settings.yml
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

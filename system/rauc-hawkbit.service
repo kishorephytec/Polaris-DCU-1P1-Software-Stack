@@ -1,0 +1,14 @@
+[Unit]
+Description=Rauc Hawkbit Client Service
+
+[Service]
+Type=simple
+ExecStart=/root/rauc-hawkbit/bin/rauc-hawkbit-client -c /root/rauc-hawkbit/rauc_hawkbit/config.cfg
+WorkingDirectory=/root/rauc-hawkbit
+Environment="PYTHONPATH=/root/rauc-hawkbit"
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
