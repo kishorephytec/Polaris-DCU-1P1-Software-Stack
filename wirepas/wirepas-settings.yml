@@ -1,0 +1,15 @@
+# 
+#MQTT brocker Settings 
+# 
+mqtt_hostname: phytecdev.prod-wirepas.com
+mqtt_port: 8883
+mqtt_username: mosquittouser
+mqtt_password: oM4UofPgaARuAPwNCViRpdQ6o0h
+mqtt_force_unsecure: false
+# 
+#Gateway settings 
+# 
+gateway_id: wirepas_42
+#Filtering Destination Endpoints
+#
+whitened_endpoints_filter: "[1-239]"

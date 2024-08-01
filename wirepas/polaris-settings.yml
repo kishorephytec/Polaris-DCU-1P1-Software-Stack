@@ -1,0 +1,16 @@
+#
+#MQTT brocker Settings  
+# 
+mqtt_hostname: mqtt.eclipseprojects.io
+mqtt_port: 1883
+mqtt_username: None
+mqtt_password: None
+mqtt_force_unsecure: true
+#
+#Gateway settings
+#
+gateway_id: Polaris_41
+#
+#Filtering Destination Endpoints
+#
+ignored_endpoints_filter: "[240-255]"
