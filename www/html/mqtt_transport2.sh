@@ -6,12 +6,12 @@ TEMP_FILE="/var/www/html/mqtt_transport2.tmp"
 SETTINGS_FILE="/root/wirepas/wirepas-settings.yml"
 
 # Read MQTT settings from JSON
-MQTT_HOSTNAME=$(jq -r '.[] | select(.channel_name == "MQTT_Transport2") | .cfg_params[0].mqtt_hostname' "$JSON_FILE")
-MQTT_PORT=$(jq -r '.[] | select(.channel_name == "MQTT_Transport2") | .cfg_params[0].mqtt_port' "$JSON_FILE")
-MQTT_USERNAME=$(jq -r '.[] | select(.channel_name == "MQTT_Transport2") | .cfg_params[0].mqtt_username' "$JSON_FILE")
-MQTT_PASSWORD=$(jq -r '.[] | select(.channel_name == "MQTT_Transport2") | .cfg_params[0].mqtt_password' "$JSON_FILE")
-MQTT_FORCE_UNSECURE=$(jq -r '.[] | select(.channel_name == "MQTT_Transport2") | .cfg_params[0].mqtt_force_unsecure' "$JSON_FILE")
-GATEWAY_ID=$(jq -r '.[] | select(.channel_name == "MQTT_Transport2") | .cfg_params[0].gateway_id' "$JSON_FILE")
+MQTT_HOSTNAME=$(jq -r '.[] | select(.channel_name == "NMS-transport-service") | .cfg_params[0].mqtt_hostname' "$JSON_FILE")
+MQTT_PORT=$(jq -r '.[] | select(.channel_name == "NMS-transport-service") | .cfg_params[0].mqtt_port' "$JSON_FILE")
+MQTT_USERNAME=$(jq -r '.[] | select(.channel_name == "NMS-transport-service") | .cfg_params[0].mqtt_username' "$JSON_FILE")
+MQTT_PASSWORD=$(jq -r '.[] | select(.channel_name == "NMS-transport-service") | .cfg_params[0].mqtt_password' "$JSON_FILE")
+MQTT_FORCE_UNSECURE=$(jq -r '.[] | select(.channel_name == "NMS-transport-service") | .cfg_params[0].mqtt_force_unsecure' "$JSON_FILE")
+GATEWAY_ID=$(jq -r '.[] | select(.channel_name == "NMS-transport-service") | .cfg_params[0].gateway_id' "$JSON_FILE")
 
 # Check if temp file exists
 if [ -f "$TEMP_FILE" ]; then
@@ -42,7 +42,7 @@ if [ -f "$TEMP_FILE" ]; then
         sed -i "s/gateway_id: .*/gateway_id: $GATEWAY_ID/" "$SETTINGS_FILE"
 
         sleep 10s
-
+        systemctl daemon-reload
         systemctl restart wirepasTransport.service
 
         echo "MQTT2 settings updated successfully"
@@ -69,7 +69,7 @@ else
     sed -i "s/gateway_id: .*/gateway_id: $GATEWAY_ID/" "$SETTINGS_FILE"
 
     sleep 10s
-
+    systemctl daemon-reload
     systemctl restart wirepasTransport.service
 
     echo "MQTT2 settings updated successfully"

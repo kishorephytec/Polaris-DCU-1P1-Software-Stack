@@ -4,7 +4,7 @@ Requires=getty.target
 [Service]
 Type=simple
 User=root
-ExecStart=/root/gateway/sink_service/build/sinkService -b 125000 -p /dev/ttymxc1 -i 1
+ExecStart=/root/gateway/sink_service/build/sinkService -b 125000 -p /dev/ttymxc1 -i 6
 Restart=always
 RestartSec=5
 [Install]

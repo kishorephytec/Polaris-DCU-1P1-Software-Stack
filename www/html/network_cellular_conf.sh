@@ -30,15 +30,12 @@ if [ -f "$TEMP_FILE" ]; then
         sed -i "s/^echo \"AT+CGDCONT=.*$/echo \"AT+CGDCONT=2,\"IP\",\"$APN\"\" > \/dev\/ttyUSB2/" "$N58_SCRIPT"
 
         # Restart the service
+	systemctl daemon-reload
         systemctl restart cellular.service
 
         echo "APN updated successfully"
     else
         echo "APN is the same. No changes required."
-
-        # Update APN in n58.sh script
-        sed -i "s/^echo \"AT+CGDCONT=.*$/echo \"AT+CGDCONT=1,\"IP\",\"$APN\"\" > \/dev\/ttyUSB2/" "$N58_SCRIPT"
-        sed -i "s/^echo \"AT+CGDCONT=.*$/echo \"AT+CGDCONT=2,\"IP\",\"$APN\"\" > \/dev\/ttyUSB2/" "$N58_SCRIPT"
 
     fi
 else
@@ -50,6 +47,7 @@ else
     sed -i "s/^echo \"AT+CGDCONT=.*$/echo \"AT+CGDCONT=2,\"IP\",\"$APN\"\" > \/dev\/ttyUSB2/" "$N58_SCRIPT"
 
     # Restart the service
+    systemctl daemon-reload
     systemctl restart cellular.service
 
     echo "Temp file created and APN updated successfully"

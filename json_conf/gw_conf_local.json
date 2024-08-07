@@ -2,82 +2,33 @@
     {
         "sink-service-1-name": {
             "WM_GW_SINK_UART_PORT": "",
-            "WM_GW_SINK_ID": "sink4",
+            "WM_GW_SINK_ID": "sink3",
             "WM_GW_SINK_BAUDRATE": "",
             "WM_GW_SINK_MAX_POLL_FAIL_DURATION": "",
             "WM_GW_SINK_MAX_FRAGMENT_DURATION_S": "",
             "WM_GW_SINK_DOWNLINK_LIMIT": "",
-            "WM_CN_NODE_ADDRESS": "2115071119",
+            "WM_CN_NODE_ADDRESS": "12345678",
             "WM_CN_NODE_ROLE": "sink csma-ca",
-            "WM_CN_NETWORK_ADDRESS": "0xC8C427",
-            "WM_CN_NETWORK_CHANNEL": "6",
+            "WM_CN_NETWORK_ADDRESS": "0xC8C431",
+            "WM_CN_NETWORK_CHANNEL": "1",
             "WM_CN_AUTHENTICATION_KEY": "",
             "WM_CN_CIPHER_KEY": "",
             "WM_CN_START_SINK": "1"
         },
         "sink-service-2-name": {
             "WM_GW_SINK_UART_PORT": "",
-            "WM_GW_SINK_ID": "sink1",
+            "WM_GW_SINK_ID": "sink7",
             "WM_GW_SINK_BAUDRATE": "",
             "WM_GW_SINK_MAX_POLL_FAIL_DURATION": "",
             "WM_GW_SINK_MAX_FRAGMENT_DURATION_S": "",
             "WM_GW_SINK_DOWNLINK_LIMIT": "",
-            "WM_CN_NODE_ADDRESS": "2115071110",
+            "WM_CN_NODE_ADDRESS": "2115071107",
             "WM_CN_NODE_ROLE": "sink csma-ca",
-            "WM_CN_NETWORK_ADDRESS": "0xC8C428",
-            "WM_CN_NETWORK_CHANNEL": "4",
+            "WM_CN_NETWORK_ADDRESS": "0xC8C426",
+            "WM_CN_NETWORK_CHANNEL": "5",
             "WM_CN_AUTHENTICATION_KEY": "",
             "WM_CN_CIPHER_KEY": "",
             "WM_CN_START_SINK": "1"
-        },
-        "NMS-transport-service": {
-            "WM_SERVICES_MQTT_HOSTNAME": "",
-            "WM_SERVICES_MQTT_USERNAME": "",
-            "WM_SERVICES_MQTT_PASSWORD": "",
-            "WM_SERVICES_MQTT_PORT": "",
-            "WM_GW_ID": "",
-            "WM_GW_MODEL": "",
-            "WM_GW_VERSION": "",
-            "WM_SERVICES_MQTT_CA_CERTS": "",
-            "WM_SERVICES_MQTT_CLIENT_CRT": "",
-            "WM_SERVICES_MQTT_CLIENT_KEY": "",
-            "WM_SERVICES_MQTT_CERT_REQS": "",
-            "WM_SERVICES_MQTT_TLS_VERSION": "",
-            "WM_SERVICES_MQTT_CIPHERS": "",
-            "WM_SERVICES_MQTT_PERSIST_SESSION": "",
-            "WM_SERVICES_MQTT_FORCE_UNS": "",
-            "WM_SERVICES_MQTT_ALLOW_UNTRUSTED": "",
-            "WM_SERVICES_MQTT_RECONNECT_DELAY": "",
-            "WM_SERVICES_MQTT_MAX_INFLIGHT_MESSAGES": "",
-            "WM_SERVICES_MQTT_USE_WEBSOCKET": "",
-            "WM_GW_IGNORED_ENDPOINTS_FILTER": "",
-            "WM_GW_WHITENED_ENDPOINTS_FILTER": "",
-            "WM_DEBUG_LEVEL": ""
-        },
-        "polaris-transport-service": {
-            "POL_MQTT_HOSTNAME": "",
-            "POL_MQTT_USERNAME": "",
-            "POL_MQTT_PASSWORD": "",
-            "POL_MQTT_PORT": "",
-            "POL_DCU_SERIAL_NO": "",
-            "POL_PREFIX_ID": "",
-            "POL_CLUSTER_ID": "",
-            "POL_NETWORK_ID": "",
-            "POL_MQTT_CA_CERTS": "",
-            "POL_MQTT_CLIENT_CRT": "",
-            "POL_MQTT_CLIENT_KEY": "",
-            "POL_MQTT_CERT_REQS": "",
-            "POL_MQTT_CIPHERS": "",
-            "POL_MQTT_PERSIST_SESSION": "",
-            "POL_MQTT_FORCE_UNSECURE": "",
-            "POL_MQTT_ALLOW_UNTRUSTED": "",
-            "POL_MQTT_RECONNECT_DELAY": "",
-            "POL_MQTT_MAX_INFLIGHT_MESSAGES": "",
-            "POL_MQTT_USE_WEBSOCKET": "",
-            "POL_BUFFERING_MAX_BUFFERED_PACKETS": "",
-            "POL_BUFFERING_MAX_DELAY_WITHOUT_PUBLISH": "",
-            "POL_BUFFERING_MINIMAL_SINK_COST": "",
-            "POL_LOG_LEVEL": ""
         }
     },
     {
@@ -89,7 +40,7 @@
             },
             {
                 "name": "password",
-               "value": "Phytec@2023"
+                "value": "Phytec@2023"
             }
         ]
     },
@@ -107,20 +58,28 @@
         ]
     },
     {
-        "channel_name": "MQTT_Transport1",
+        "channel_name": "polaris-transport-service",
         "cfg_params": [
             {
-                "mqtt_hostname": "mqtt.eclipseprojects.io",
-                "mqtt_port": 1883,
-                "mqtt_username": "None",
-                "mqtt_password": "None",
-                "mqtt_force_unsecure": true ,
-                "gateway_id": "Polaris_41"
+                   "dcu_serial_no": 45678,
+                   "prefix_id": "ABCDE",
+                   "cluster_id": 1,
+                   "network_id": "RF",
+                   "mqtt_hostname": "mqtt.eclipseprojects.io",
+                   "mqtt_username": "None",
+                   "mqtt_password": "None",
+                   "mqtt_port": 1883,
+                   "mqtt_force_unsecure": true,
+                   "mqtt_rate_limit_pps": 10,
+                   "buffering_stop_stack": true,
+                   "buffering_max_buffered_packets": 0,
+                   "buffering_max_delay_without_publish": 0
             }
         ]
+
     },
     {
-        "channel_name": "MQTT_Transport2",
+        "channel_name": "NMS-transport-service",
         "cfg_params": [
             {
                 "mqtt_hostname": "phytecdev.prod-wirepas.com",
@@ -128,11 +87,27 @@
                 "mqtt_username": "mosquittouser",
                 "mqtt_password": "oM4UofPgaARuAPwNCViRpdQ6o0h",
                 "mqtt_force_unsecure": false ,
-                "gateway_id": "wirepas_42"
+                "gateway_id": "phytec-gw-imx6ul-demo"
             }
         ]
     },
+    
+    { 
+            "System_config_info": {
+                "dcu_mqtt_interval": "60"
+            }
+    },
     {
-	"dcu_mqtt_interval": 5
+            "channel_name": "Rauc-app-update-config",
+            "cfg_params": [
+                    {
+                            "hawkbit_server": "167.179.83.158:8085",
+                            "target_name": "test-multifiles",
+                            "auth_token": "828ffe63f0d4966f55c19d12191a5971",
+                            "update_type": "app",
+                            "note": "update_type can be 'app' or 'os'"
+                    }
+             ]
     }
+
 ]

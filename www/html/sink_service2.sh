@@ -21,8 +21,7 @@ if [ -f "$TEMP_FILE" ]; then
     TEMP_NETWORK_CHANNEL=$(grep -oP '(?<=NETWORK_CHANNEL=).*' "$TEMP_FILE")
     TEMP_START=$(grep -oP '(?<=START=).*' "$TEMP_FILE")
     # Compare values
-    if [ "$SINK_NAME" != "$TEMP_SINK_NAME" ] || [ "$NODE_ADDRESS" != "$TEMP_NODE_ADDRESS" ] || [ "$NODE_ROLE" != "$TEMP_NODE_ROLE" ] || [ "$NETWORK_ADDRESS" != "$TEMP_NETWORK_ADDRESS" ] || [ "$NETWORK_CH
-ANNEL" != "$TEMP_NETWORK_CHANNEL" ] || [ "$START" != "$TEMP_START" ]; then
+    if [ "$SINK_NAME" != "$TEMP_SINK_NAME" ] || [ "$NODE_ADDRESS" != "$TEMP_NODE_ADDRESS" ] || [ "$NODE_ROLE" != "$TEMP_NODE_ROLE" ] || [ "$NETWORK_ADDRESS" != "$TEMP_NETWORK_ADDRESS" ] || [ "$NETWORK_CHANNEL" != "$TEMP_NETWORK_CHANNEL" ] || [ "$START" != "$TEMP_START" ]; then
         # Update temp file
         echo "SINK_NAME=$SINK_NAME" > "$TEMP_FILE"
         echo "NODE_ADDRESS=$NODE_ADDRESS" >> "$TEMP_FILE"
@@ -59,7 +58,6 @@ else
     SINK_ID=$(echo "$SINK_NAME" | sed 's/sink//')
     # Update service file
     sed -i "s|ExecStart=/root/gateway/sink_service/build/sinkService -b 125000 -p /dev/ttymxc1 -i .*|ExecStart=/root/gateway/sink_service/build/sinkService -b 125000 -p /dev/ttymxc1 -i $SINK_ID|" "$SERVICE_FILE"
- 
     # Restart service
     systemctl daemon-reload
     systemctl restart RBSink2.service

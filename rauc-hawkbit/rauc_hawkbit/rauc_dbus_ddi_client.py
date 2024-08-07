@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import subprocess
 import asyncio
 from aiohttp.client_exceptions import ClientOSError, ClientResponseError
 from gi.repository import GLib
@@ -198,12 +199,6 @@ class RaucDBUSDDIClient(AsyncDBUSClient):
 
 
     def remove_bundle(self, cnfg=None, bundle=None):
-        # Remove downloaded bundle
-        """try:
-            os.remove(bundle)
-        except Exception as e:
-            self.logger.error('Failed to delete %s. Reason: %s' % (bundle, e))"""
-
 
         # Remove unpacked bundle
         try:
@@ -222,30 +217,18 @@ class RaucDBUSDDIClient(AsyncDBUSClient):
         bundle_file.extractall(path=str(config["Download_Path"]))
         bundle_file.close()
 
-
-        # Version check
-        """version = self.json_dump(str(config["Bin_path"]) + str("/") + str(config["app_version_file"]))
-        self.logger.info(version)
-        curr_version = version["version"]
-
-        version = self.json_dump(str(config["Update_Folder"]) + str("/") + str(config["app_version_file"]))
-        self.logger.info(version)
-        new_version = version["version"]
-
-
-        if curr_version != new_version:
-            self.logger.info("New version is available. starting the Application upgrade process")
-        else:
-            self.logger.info("No new version is available. Skipping the Application upgrade process")
-            self.remove_bundle(cnfg=self.app_config, bundle=bundle_location)
-            return 1"""
-
         # Stopping the Application service
         try:
             cmd = str("systemctl stop ") + str(config["app_service"])
             os.popen(cmd)
             time.sleep(3)
             cmd = str("systemctl stop ") + str(config["app_service1"])
+            os.popen(cmd)
+            time.sleep(3)
+            cmd = str("systemctl stop ") + str(config["app_service2"])
+            os.popen(cmd)
+            time.sleep(3)
+            cmd = str("systemctl stop ") + str(config["app_service3"])
             os.popen(cmd)
             time.sleep(3)
             self.logger.info("Stopped the Application service")
@@ -256,14 +239,23 @@ class RaucDBUSDDIClient(AsyncDBUSClient):
             return 1
 
         # Install the new Application
-        # Copy new Application
-        try:
-            shutil.copytree(config["Update_Folder"], config["Bin_path"],dirs_exist_ok=True)
-        except Exception as e:
-            self.logger.error('Failed to copy %s into %s. Reason: %s' % (config["Update_Folder"], config["Bin_path"], e))
-            self.remove_bundle(cnfg=self.app_config, bundle=bundle_location)
-            # TODO: Restore the previous binaries
-            return 1
+
+        script_path = str(config["Update_Folder"] + "/script.sh")
+        if os.path.exists(script_path):
+            self.logger.info("Found script: {}".format(script_path))
+
+            os.chmod(script_path,0o755)
+
+            try:
+                result = os.system(script_path)
+                self.logger.info("Script executed with result: {}".format(result))
+            except OSError as ose:
+                self.logger.error("Error while executing script")
+                self.logger.exception(ose)
+
+        else:
+            self.logger.warning("Script not found: {}".format(script_path))
+
         self.remove_bundle(cnfg=self.app_config, bundle=bundle_location)
 
         # Starting the Application service
@@ -272,6 +264,12 @@ class RaucDBUSDDIClient(AsyncDBUSClient):
             os.popen(cmd)
             time.sleep(3)
             cmd = str("systemctl start ") + str(config["app_service1"])
+            os.popen(cmd)
+            time.sleep(3)
+            cmd = str("systemctl start ") + str(config["app_service2"])
+            os.popen(cmd)
+            time.sleep(3)
+            cmd = str("systemctl start ") + str(config["app_service3"])
             os.popen(cmd)
             time.sleep(3)
             self.logger.info("Started the Application service")

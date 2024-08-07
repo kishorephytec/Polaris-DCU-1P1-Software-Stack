@@ -5,7 +5,6 @@ JSON_DIR="/etc/json_conf/"
 JSON_FILE="gw_conf_local.json"
 
 # Function to process the JSON file
-
 process_json_file() {
     echo "Started"
     jq -c '.[]' "$JSON_DIR$JSON_FILE" |
@@ -31,22 +30,34 @@ process_json_file() {
         case $CHANNEL_NAME in
             "Wifi_Channel")
                 ./network_wifi_conf.sh | while IFS= read -r line; do printf '%s %s\n' "$(date)" "$line"; done >> /var/log/wifi.log
-                echo "WIFI CONFGURATION APPLIED"
+                echo "WIFI CONFIGURATION APPLIED"
                 sleep 15s
                 ;;
             "4G_Channel")
                 ./network_cellular_conf.sh | while IFS= read -r line; do printf '%s %s\n' "$(date)" "$line"; done >> /var/log/cellular.log
                 echo "CELLULAR CONFIGURATION APPLIED"
                 ;;
-            "MQTT_Transport1")
+            "polaris-transport-service")
                 ./mqtt_transport1.sh | while IFS= read -r line; do printf '%s %s\n' "$(date)" "$line"; done >> /var/log/mqtt_transport1.log
-                echo "MQTT TRANSPORT1 APPLIED"
+                echo "MQTT POLARIS TRANSPORT CONF APPLIED"
                 ;;
-            "MQTT_Transport2")
+            "NMS-transport-service")
                 ./mqtt_transport2.sh | while IFS= read -r line; do printf '%s %s\n' "$(date)" "$line"; done >> /var/log/mqtt_transport2.log
-                echo "MQTT TRANSPORT2 APPLIED"
+                echo "MQTT NMS TRANSPORT CONF APPLIED"
                 ;;
-          
+            "Rauc-app-update-config")
+                UPDATE_TYPE=$(jq -r '.[] | select(.channel_name == "Rauc-app-update-config") | .cfg_params[0].update_type' "$JSON_DIR$JSON_FILE")
+                if [ "$UPDATE_TYPE" == "app" ]; then
+                    ./rauc-app-update-conf.sh | while IFS= read -r line; do printf '%s %s\n' "$(date)" "$line"; done >> /var/log/rauc-hawkbit-update.log
+                    echo "RAUC APP UPDATE CONF APPLIED"
+                elif [ "$UPDATE_TYPE" == "os" ]; then
+                    ./rauc-os-update-conf.sh | while IFS= read -r line; do printf '%s %s\n' "$(date)" "$line"; done >> /var/log/rauc-hawkbit-update.log
+                    echo "RAUC OS UPDATE CONF APPLIED"
+                else
+                    echo "Unknown update_type: $UPDATE_TYPE"
+                    exit 1
+                fi
+                ;;
             *)
                 echo "Unknown channel_name: $CHANNEL_NAME"
                 exit 1
@@ -54,8 +65,6 @@ process_json_file() {
         esac
     done
 }
-
-
 
 echo "Monitoring $JSON_DIR for file creation..."
 # Process existing files
@@ -68,4 +77,3 @@ for FILENAME in "$JSON_DIR"/*; do
         # rm "$FILENAME"
     fi
 done
-

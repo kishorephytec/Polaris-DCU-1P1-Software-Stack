@@ -50,14 +50,14 @@ if [ "$NEED_UPDATE" = true ]; then
     sed -i -E "/^(\s*psk\s*=).*/ { s//\1\"$JSON_PASS\"/ }" "$CONF_FILE"
  
     # Restart WiFi connection
-    sudo rm /var/run/wpa_supplicant/wlx5026efb0f288
+    sudo rm /var/run/wpa_supplicant/wlx5026efb0f27c
  
-    wpa_supplicant -B -Dnl80211 -i wlx5026efb0f288 -c "$CONF_FILE"
+    wpa_supplicant -B -Dnl80211 -i wlx5026efb0f27c -c "$CONF_FILE"
  
-    udhcpc -i wlx5026efb0f288
+    timeout 4 udhcpc -i wlx5026efb0f27c
  
     # Get the IP address
-    WIFI_IP=$(ip addr show wlx5026efb0f288 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+    WIFI_IP=$(ip addr show wlx5026efb0f27c | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
  
     # Log the connection status
     echo "$(date -u) WiFi: IP address $WIFI_IP is connected" >> "$STATUS_FILE"

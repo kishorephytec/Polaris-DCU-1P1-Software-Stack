@@ -1,0 +1,11 @@
+[Unit]
+Description=MQTT Explorer Service
+Requires=network.target
+
+[Service]
+ExecStart=python3 /etc/json_conf/mqtt/dcu-diagnostics-publish.py 
+Restart=always
+
+
+[Install]
+WantedBy=multi-user.target
